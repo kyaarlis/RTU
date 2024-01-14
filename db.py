@@ -34,7 +34,7 @@ def retrieve_data():
             'study_group': study_group
         })
 
-    return data
+    return data, conn
 
 conn.commit()
 # conn.close()

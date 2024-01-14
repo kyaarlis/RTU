@@ -7,7 +7,7 @@ from db import insert_data, retrieve_data
 service = Service()
 option = webdriver.ChromeOptions()
 driver = webdriver.Chrome(service=service, options=option)
-
+start_time = time.time()
 def user_inputs():
     study_program_input = input("Ievadiet studiju programmas nosaukumu: ")
     course_input = input("Ievadiet kursa numuru: ")
@@ -16,6 +16,7 @@ def user_inputs():
     insert_data(study_program_input, course_input, group_input)
 
 def studiju_grafiks(study_program, course, group):
+    
     url = "https://nodarbibas.rtu.lv/"
     driver.get(url)
 
@@ -43,17 +44,21 @@ def studiju_grafiks(study_program, course, group):
         if group_option.text == group:
             group_option.click()
 
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"Execution time: {round(execution_time, 1)} seconds")
+
     time.sleep(20.0)
 
 retrieved_data = retrieve_data()
 
-print("Retrieved data:", len(retrieved_data))
-print(retrieved_data)
+# print("Retrieved data:", len(retrieved_data))
+# print(retrieved_data)
 
 if len(retrieved_data) == 0:
     user_inputs()
 
-retrieved_data = retrieve_data()
+retrieved_data, conn = retrieve_data()
 
 study_program = retrieved_data[-1]['study_program']
 course = retrieved_data[-1]['study_course']
@@ -62,4 +67,5 @@ group = retrieved_data[-1]['study_group']
     
 studiju_grafiks(study_program, course, group)
 
+conn.close()
 driver.quit()
