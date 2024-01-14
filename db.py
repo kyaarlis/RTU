@@ -20,14 +20,15 @@ def insert_data(study_program, study_course, study_group):
     conn.commit()
 
 def retrieve_data():
-    cursor.execute('''SELECT id, study_program, study_course, study_group FROM grafiki''')
+    cursor.execute('''SELECT study_program, study_course, study_group FROM grafiki''')
     rows = cursor.fetchall()
     data = []
 
     for row in rows:
         study_program, study_course, study_group = row
+
         data.append({
-            'id': id,
+            # 'id': id,
             'study_program': study_program,
             'study_course': study_course,
             'study_group': study_group

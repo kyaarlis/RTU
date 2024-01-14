@@ -8,16 +8,16 @@ service = Service()
 option = webdriver.ChromeOptions()
 driver = webdriver.Chrome(service=service, options=option)
 
+def user_inputs():
+    study_program_input = input("Ievadiet studiju programmas nosaukumu: ")
+    course_input = input("Ievadiet kursa numuru: ")
+    group_input = input("Ievadiet grupas numuru: ")
 
-study_program = input("Ievadiet studiju programmas nosaukumu: ")
-course = input("Ievadiet kursa numuru: ")
-group = input("Ievadiet grupas numuru: ")
-
+    insert_data(study_program_input, course_input, group_input)
 
 def studiju_grafiks(study_program, course, group):
     url = "https://nodarbibas.rtu.lv/"
     driver.get(url)
-    time.sleep(2.0)
 
     visas_studiju_prog_button = driver.find_element(By.CLASS_NAME, "btn.dropdown-toggle.btn-light") 
     visas_studiju_prog_button.click()
@@ -29,7 +29,6 @@ def studiju_grafiks(study_program, course, group):
             a.click()
 
     select_course = driver.find_element(By.ID, "course-id")
-    select_course.click()
     course_options = select_course.find_elements(By.TAG_NAME, "option")
 
     for option in course_options:
@@ -46,6 +45,21 @@ def studiju_grafiks(study_program, course, group):
 
     time.sleep(20.0)
 
+retrieved_data = retrieve_data()
+
+print("Retrieved data:", len(retrieved_data))
+print(retrieved_data)
+
+if len(retrieved_data) == 0:
+    user_inputs()
+
+retrieved_data = retrieve_data()
+
+study_program = retrieved_data[-1]['study_program']
+course = retrieved_data[-1]['study_course']
+group = retrieved_data[-1]['study_group']
+
+    
 studiju_grafiks(study_program, course, group)
-# studiju_grafiks("Informācijas tehnoloģija (RDBI0)", "1", "2")
+
 driver.quit()
