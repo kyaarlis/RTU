@@ -2,21 +2,31 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 import time
+from db import insert_data, retrieve_data
 
 service = Service()
 option = webdriver.ChromeOptions()
 driver = webdriver.Chrome(service=service, options=option)
 
-url = "https://nodarbibas.rtu.lv/"
-driver.get(url)
-time.sleep(2.0)
+
+study_program = input("Ievadiet studiju programmas nosaukumu: ")
+course = input("Ievadiet kursa numuru: ")
+group = input("Ievadiet grupas numuru: ")
+
 
 def studiju_grafiks(study_program, course, group):
+    url = "https://nodarbibas.rtu.lv/"
+    driver.get(url)
+    time.sleep(2.0)
+
     visas_studiju_prog_button = driver.find_element(By.CLASS_NAME, "btn.dropdown-toggle.btn-light") 
     visas_studiju_prog_button.click()
 
-    studiju_prog = driver.find_element(By.ID, study_program)
-    studiju_prog.click()
+    studiju_prog = driver.find_element(By.CLASS_NAME, "dropdown-menu.inner.show")
+    for a in studiju_prog.find_elements(By.TAG_NAME, "a"):
+        span = a.find_element(By.TAG_NAME, "span")
+        if span.text == study_program:
+            a.click()
 
     select_course = driver.find_element(By.ID, "course-id")
     select_course.click()
@@ -34,8 +44,8 @@ def studiju_grafiks(study_program, course, group):
         if group_option.text == group:
             group_option.click()
 
-    time.sleep(5.0)
+    time.sleep(20.0)
 
-
-studiju_grafiks("bs-select-1-10", "1", "2")
+studiju_grafiks(study_program, course, group)
+# studiju_grafiks("Informācijas tehnoloģija (RDBI0)", "1", "2")
 driver.quit()
