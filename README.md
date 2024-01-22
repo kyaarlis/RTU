@@ -1,3 +1,6 @@
+## Projektu veidoja: Kārlis Veckagans (231RDB262), Eduards Teteris (231RDB257)
+## un Aldis Šolins (231RDB030)
+
 ## Projekta apraksts
 ### Lai apskatītos studiju nodarbību grafiku studentiem ir jāpatērē
 ### vairāk laika un darba nekā tas būtu vēlams.
